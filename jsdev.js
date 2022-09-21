@@ -1,3 +1,5 @@
+// JAVASCRIPT DEVELOPER TOOLS
+
 "use strict";
 
 function randInt(min, max){
@@ -91,8 +93,3 @@ function echo(...args){
     }
     document.getElementsByTagName("body")[0].insertAdjacentHTML("beforeend", `<div>${output}</div>`);
 }
-
-const stringArray = document.getElementById("test").dataset.array;
-
-console.log(stringArray.parseArray());
-console.log([1,2,3,4].sortRandom())
