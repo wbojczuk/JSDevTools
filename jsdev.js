@@ -61,6 +61,28 @@ String.prototype.parseArray = function() {
     }
 };
 
+
+// ARRAY PROTOTYPES
+
+// SORT TARGET ARRAY IN A RANDOM ORDER
+Array.prototype.sortRandom = function(){
+    const targetArray = this;
+    const arrayLength = targetArray.length;
+    const arrayRefs = [];
+    const outputArray = [];
+
+    for(let i = 0; i < arrayLength; i++){
+        arrayRefs.push(i);
+    }
+    for(let i = 0; i < arrayLength; i++){
+        const currentNum = Math.floor(Math.random() * (arrayRefs.length - 0) + 0);
+        outputArray.push(targetArray[arrayRefs[currentNum]]);
+        arrayRefs.splice(currentNum, 1);
+    }
+    return outputArray;
+};
+
+
 // ECHO TO HTML BODY ELEM
 function echo(...args){
     let output = "";
@@ -72,4 +94,5 @@ function echo(...args){
 
 const stringArray = document.getElementById("test").dataset.array;
 
-console.log(stringArray.parseArray())
+console.log(stringArray.parseArray());
+console.log([1,2,3,4].sortRandom())
