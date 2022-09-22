@@ -27,12 +27,13 @@ String.prototype.wordsToUpperCase = function(){
 // PARSE STRING TO ARRAY (SUPPORTS NUMERIC/STRING VALUES) USEFUL FOR DATA ATTRIBUTES
 String.prototype.parseArray = function() {
     const str = this;
-    if(/(?<=\[)[^\]\[]*(?=\])/.test(str)){
+    if(/(?<=\[).*(?=\])/.test(str)){
     
-    const arrayRegEx = /(?<=\[)[^\]\[]*(?=\])/;
+    const arrayRegEx = /((?<!\[).*(?<=\[))[^\]\[]*((?=\]).*(?!\]))/;
     const match = str.match(arrayRegEx)[0];
     const newArray = match.split(/([\de]*\.[\de]*|[\de]{1,}|"[^"]{1,}"|'[^']{1,}')(?=[,]*)|(?<=[,]*[ ]*)([\de]{1,}|"[^"]{1,}"|'[^']{1,}')/g);
-    
+    newArray.splice(0,1);
+    newArray.splice(newArray.length - 1, 1);
     let loopAmt = newArray.length;
     // STRING/Numeric Conversion
     for(let i = 0; i < loopAmt; i++){
@@ -93,3 +94,5 @@ function echo(...args){
     }
     document.getElementsByTagName("body")[0].insertAdjacentHTML("beforeend", `<div>${output}</div>`);
 }
+
+console.log((document.getElementById("test").dataset.array).parseArray())
