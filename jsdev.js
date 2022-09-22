@@ -10,13 +10,11 @@ function randInt(min, max){
 
 // Word Count
 String.prototype.wordCount = function(){
-    const str = this;
-    return str.match(/[\w]{1,}/gi).length;
+    return this.match(/[\w]{1,}/gi).length;
 };
 
 String.prototype.wordsToUpperCase = function(){
-    const str = this;
-    return(str.replace(/[a-z]{1,}(?!\w)/gi, (match)=>{
+    return(this.replace(/[a-z]{1,}(?!\w)/gi, (match)=>{
         let tempStr = match.slice(1);
         let tempUp = match.charAt(0).toUpperCase();
         return tempUp + tempStr;
@@ -60,7 +58,7 @@ String.prototype.parseArray = function() {
     
     return newArray;
     } else{
-        console.log("parseArray Error: No Array Deteted");
+        console.log("parseArray Error: No Array Detected");
     }
 };
 
@@ -69,8 +67,7 @@ String.prototype.parseArray = function() {
 
 // SORT TARGET ARRAY IN A RANDOM ORDER
 Array.prototype.sortRandom = function(){
-    const targetArray = this;
-    const arrayLength = targetArray.length;
+    const arrayLength = this.length;
     const arrayRefs = [];
     const outputArray = [];
 
@@ -79,10 +76,16 @@ Array.prototype.sortRandom = function(){
     }
     for(let i = 0; i < arrayLength; i++){
         const currentNum = Math.floor(Math.random() * (arrayRefs.length - 0) + 0);
-        outputArray.push(targetArray[arrayRefs[currentNum]]);
+        outputArray.push(this[arrayRefs[currentNum]]);
         arrayRefs.splice(currentNum, 1);
     }
     return outputArray;
+};
+
+
+// OBJECT PROTOTYPES
+Object.prototype.isObject = function(){
+    return (Object.prototype.toString.call(this) == "[object Object]")? true : false ;
 };
 
 
@@ -94,5 +97,3 @@ function echo(...args){
     }
     document.getElementsByTagName("body")[0].insertAdjacentHTML("beforeend", `<div>${output}</div>`);
 }
-
-console.log((document.getElementById("test").dataset.array).parseArray())
