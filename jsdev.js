@@ -10,7 +10,12 @@ function randInt(min, max){
 
 // Word Count
 String.prototype.wordCount = function(){
-    return this.match(/[\w]{1,}/gi).length;
+    if(/[0-9a-z]{1,}/gi.test(this)){
+        return this.match(/[0-9a-z]{1,}/gi).length;
+    }else{
+        return 0;
+    }
+    
 };
 
 String.prototype.wordsToUpperCase = function(){
@@ -28,35 +33,35 @@ String.prototype.parseArray = function() {
     if(/(?<=\[).*(?=\])/.test(str)){
     const arrayRegEx = /((?<!\[).*(?<=\[))[^\]\[]*((?=\]).*(?!\]))/;
     const match = str.match(arrayRegEx)[0];
-    const newArray = match.split(/([\de]*\.[\de]*|[\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`)(?=[,]*)|(?<=[,]*[ ]*)([\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`|true|false)/gi);
-    newArray.splice(0,1);
-    newArray.splice(newArray.length - 1, 1);
-    let loopAmt = newArray.length;
+    const nArr = match.split(/([\de]*\.[\de]*|[\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`)(?=[,]*)|(?<=[,]*[ ]*)([\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`|true|false)/gi);
+    nArr.splice(0,1);
+    nArr.splice(nArr.length - 1, 1);
+    let loopAmt = nArr.length;
     // STRING/Numeric Conversion
     for(let i = 0; i < loopAmt; i++){
-        if(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/.test(newArray[i])){
-            newArray[i] = newArray[i].match(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/)[0];
-        }else if(!isNaN(parseFloat(newArray[i]))){
-            newArray[i] = parseFloat(newArray[i]);
-        } else if(/true|false/gi.test(newArray[i])){
-            newArray[i] = ((`${newArray[i]}`).toLowerCase() == "true") ? true : false;
+        if(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/.test(nArr[i])){
+            nArr[i] = nArr[i].match(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/)[0];
+        }else if(!isNaN(parseFloat(nArr[i]))){
+            nArr[i] = parseFloat(nArr[i]);
+        } else if(/true|false/gi.test(nArr[i])){
+            nArr[i] = ((`${nArr[i]}`).toLowerCase() == "true") ? true : false;
         }
     }
         // FILTER
-         loopAmt = newArray.length;
+         loopAmt = nArr.length;
         for(let i = 0; i < loopAmt; i++){
-            if(!/^['"]*[ ]*[^,\s]/gi.test(newArray[i])){
-                newArray.splice(i,1);
+            if(!/^['"]*[ ]*[^,\s]/gi.test(nArr[i])){
+                nArr.splice(i,1);
                 i = 0;
-                loopAmt = newArray.length;
-            }else if(newArray[i] == null){
-                newArray.splice(i,1);
+                loopAmt = nArr.length;
+            }else if(nArr[i] == null){
+                nArr.splice(i,1);
                 i=0;
-                loopAmt = newArray.length;
+                loopAmt = nArr.length;
             }
         }
     
-    return newArray;
+    return nArr;
     } else{
         console.log("parseArray Error: No Array Detected");
     }
@@ -97,5 +102,3 @@ function echo(...args){
     }
     document.getElementsByTagName("body")[0].insertAdjacentHTML("beforeend", `<div>${output}</div>`);
 }
-const parsedArray = document.getElementById("test").dataset.array.parseArray();
-console.log(parsedArray);
