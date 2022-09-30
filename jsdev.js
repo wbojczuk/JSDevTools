@@ -26,20 +26,20 @@ String.prototype.wordsToUpperCase = function(){
 String.prototype.parseArray = function() {
     const str = this;
     if(/(?<=\[).*(?=\])/.test(str)){
-    
     const arrayRegEx = /((?<!\[).*(?<=\[))[^\]\[]*((?=\]).*(?!\]))/;
     const match = str.match(arrayRegEx)[0];
-    const newArray = match.split(/([\de]*\.[\de]*|[\de]{1,}|"[^"]{1,}"|'[^']{1,}')(?=[,]*)|(?<=[,]*[ ]*)([\de]{1,}|"[^"]{1,}"|'[^']{1,}')/g);
+    const newArray = match.split(/([\de]*\.[\de]*|[\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`)(?=[,]*)|(?<=[,]*[ ]*)([\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`|true|false)/gi);
     newArray.splice(0,1);
     newArray.splice(newArray.length - 1, 1);
     let loopAmt = newArray.length;
     // STRING/Numeric Conversion
     for(let i = 0; i < loopAmt; i++){
-        if(/((?<=')[^']*(?=')|(?<=")[^"]*(?="))/.test(newArray[i])){
-            newArray[i] = newArray[i].match(/((?<=')[^']*(?=')|(?<=")[^"]*(?="))/)[0];
-            
+        if(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/.test(newArray[i])){
+            newArray[i] = newArray[i].match(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/)[0];
         }else if(!isNaN(parseFloat(newArray[i]))){
             newArray[i] = parseFloat(newArray[i]);
+        } else if(/true|false/gi.test(newArray[i])){
+            newArray[i] = ((`${newArray[i]}`).toLowerCase() == "true") ? true : false;
         }
     }
         // FILTER
@@ -97,3 +97,5 @@ function echo(...args){
     }
     document.getElementsByTagName("body")[0].insertAdjacentHTML("beforeend", `<div>${output}</div>`);
 }
+const parsedArray = document.getElementById("test").dataset.array.parseArray();
+console.log(parsedArray);
