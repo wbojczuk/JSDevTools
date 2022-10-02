@@ -50,7 +50,7 @@ String.prototype.parseArray = function() {
         // FILTER
          loopAmt = nArr.length;
         for(let i = 0; i < loopAmt; i++){
-            if(!/^['"]*[ ]*[^,\s]/gi.test(nArr[i])){
+            if(!/^[,'"]*[ ]*[^,\s]/gi.test(nArr[i])){
                 nArr.splice(i,1);
                 i = 0;
                 loopAmt = nArr.length;
