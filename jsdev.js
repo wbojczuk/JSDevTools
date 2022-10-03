@@ -27,17 +27,17 @@ String.prototype.wordsToUpperCase = function(){
     
 };
 
-// PARSE STRING TO ARRAY (SUPPORTS NUMERIC/STRING VALUES) USEFUL FOR DATA ATTRIBUTES
+// PARSE STRING TO ARRAY (SUPPORTS NUMERIC/STRING VALUES/Boolean) USEFUL FOR DATA ATTRIBUTES and storing arrays in LocalStorage
 String.prototype.parseArray = function() {
     const str = this;
-    if(/(?<=\[).*(?=\])/.test(str)){
-    const arrayRegEx = /((?<!\[).*(?<=\[))[^\]\[]*((?=\]).*(?!\]))/;
+    if(/((?<=\[).*(?=\])|(.{1,}))/.test(str)){
+    const arrayRegEx = /(((?<!\[).*(?<=\[))[^\]\[]*((?=\]).*(?!\]))|.{1,})/;
     const match = str.match(arrayRegEx)[0];
-    const nArr = match.split(/([\de]*\.[\de]*|[\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`)(?=[,]*)|(?<=[,]*[ ]*)([\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`|true|false)/gi);
+    const nArr = match.split(/([\de+]*\.[\de+]*|[\de+]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`)(?=[,]*)|(?<=[,]*[ ]*)([\de]{1,}|"[^"]{1,}"|'[^']{1,}'|`[^`]{1,}`|true|false)/gi);
     nArr.splice(0,1);
     nArr.splice(nArr.length - 1, 1);
     let loopAmt = nArr.length;
-    // STRING/Numeric Conversion
+    // STRING/Numeric/Bool Conversion
     for(let i = 0; i < loopAmt; i++){
         if(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/.test(nArr[i])){
             nArr[i] = nArr[i].match(/((?<=')[^']*(?=')|(?<=")[^"]*(?=")|(?<=`)[^`]*(?=`))/)[0];
@@ -48,16 +48,13 @@ String.prototype.parseArray = function() {
         }
     }
         // FILTER
+        
          loopAmt = nArr.length;
         for(let i = 0; i < loopAmt; i++){
-            if(!/^[,'"]*[ ]*[^,\s]/gi.test(nArr[i])){
+            if((!/^[,'`"]*[ ]*[^'`",\s]/gi.test(nArr[i]))||(nArr[i] == null)){
                 nArr.splice(i,1);
-                i = 0;
-                loopAmt = nArr.length;
-            }else if(nArr[i] == null){
-                nArr.splice(i,1);
-                i=0;
-                loopAmt = nArr.length;
+                i--;
+                loopAmt--;
             }
         }
     
@@ -85,6 +82,23 @@ Array.prototype.sortRandom = function(){
         arrayRefs.splice(currentNum, 1);
     }
     return outputArray;
+};
+
+//Parses an array object into a string that is readable by String.parseArray();
+Array.prototype.parseString = function(){
+    const arrLength = this.length;
+    let nStr = "";
+    for(let i = 0; i < arrLength; i++){
+        if(typeof this[i] == "string"){
+            this[i] = "\`" + this[i] + "\`";
+        }
+        if(i == arrLength - 1){
+            nStr += this[i];
+        }else{
+            nStr += `${this[i]}, `;
+        }  
+    }
+    return (`[${nStr}]`);
 };
 
 
