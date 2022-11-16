@@ -107,6 +107,65 @@ Object.prototype.isObject = function(){
     return (Object.prototype.toString.call(this) == "[object Object]")? true : false ;
 };
 
+// ELEMENT METHODS/PROTOTYPES
+const titleElem = {
+    // Interval Speed in MS
+    intervalSpeed: 3000,
+
+    /*
+    Description:
+    Changes title Element's textContent
+
+    Syntax:
+    titleElem.set(param_1, param_2);
+    
+    Parameters:
+    param_1 is the text to be displayed in the title element.
+    param_2 is an optional boolean value, if set to 'true' the title element's text will change between the old text and the new text on an interval. Default is 'false'.
+*/
+    set: (...args)=>{
+        const DOMTitle = document.getElementsByTagName("title")[0];
+        if(args[1] != null && args[1] === true){
+            const titles = [DOMTitle.textContent, args[0]];
+            let selected = 0;
+            changeTitle();
+            setInterval(changeTitle, titleElem.intervalSpeed);
+            function changeTitle(){
+                DOMTitle.textContent = titles[selected];
+                if(selected == 1){
+                    selected = 0;
+                }else{
+                    ++selected;
+                }
+            }
+        }else{
+            DOMTitle.textContent = args[0];
+        }
+    }
+};
+
+// Add multiple styles to a element's style tag
+Element.prototype.styles = function(addStyles){
+    const elem = this;
+    const tempStyles = addStyles.split(";");
+    tempStyles.pop();
+    const allStyles = [];
+    tempStyles.forEach((style)=>{
+        const tempStyles = style.split(":");
+        if(/-/gi.test(tempStyles[0])){
+            const tempStyle = tempStyles[0].split("-");
+            let tempStr = tempStyle[1].slice(1);
+            tempStyles[0] = tempStyle[0] + tempStyle[1].charAt(0).toUpperCase() + tempStr;
+        }
+        allStyles[allStyles.length] = [tempStyles[0].trim(), tempStyles[1].trim()];
+    });
+    allStyles.forEach((style)=>{
+        elem.style[style[0]] = style[1];
+    });
+    
+};
+
+document.getElementsByTagName("body")[0].styles(myStyles);
 
 // ECHO TO HTML BODY ELEM
 function echo(...args){
