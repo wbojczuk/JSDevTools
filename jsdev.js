@@ -165,8 +165,6 @@ Element.prototype.styles = function(addStyles){
     
 };
 
-document.getElementsByTagName("body")[0].styles(myStyles);
-
 // ECHO TO HTML BODY ELEM
 function echo(...args){
     let output = "";
