@@ -79,7 +79,7 @@ const titleElem = {
 };
 
 // Add multiple styles to a element's style tag
-Element.prototype.styles = function(addStyles){
+Element.prototype.elemStyles = function(addStyles){
     const elem = this;
     const tempStyles = addStyles.split(";");
     tempStyles.pop();
@@ -99,11 +99,21 @@ Element.prototype.styles = function(addStyles){
     
 };
 
-// ECHO TO HTML BODY ELEM
-function echo(...args){
-    let output = "";
-    for(let i = 0; i < args.length; i++){
-        output += args[i];
-    }
-    document.getElementsByTagName("body")[0].insertAdjacentHTML("beforeend", `<div>${output}</div>`);
+function postData(formVals, formAction, formMethod = "POST"){
+// formVals = [{name: "STRING", val: any}, {name: "STRING", val: any}].
+// formAction = url usually.
+// (Optional) formMethod = "POST" or "GET".
+const postForm = document.createElement("form");
+postForm.method = formMethod;
+const valsLength = formVals.length;
+const mainInput = document.createElement("input");
+for(let i = 0; i < valsLength; ++i){
+const tempInput = mainInput.cloneNode(false);
+tempInput.name = formVals[i].name;
+tempInput.value = formVals[i].value
+postForm.append(tempInput);
+}
+postForm.action = formAction;
+document.getElementsByTagName("body")[0].append(postForm);
+postForm.submit();
 }
