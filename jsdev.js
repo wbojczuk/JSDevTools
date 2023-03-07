@@ -53,31 +53,6 @@ Object.prototype.isObject = function(){
     return (Object.prototype.toString.call(this) == "[object Object]")? true : false ;
 };
 
-// ELEMENT METHODS/PROTOTYPES
-const titleElem = {
-    // Interval Speed in MS
-    intervalSpeed: 3000,
-    set: (...args)=>{
-        const DOMTitle = document.getElementsByTagName("title")[0];
-        if(args[1] != null && args[1] === true){
-            const titles = [DOMTitle.textContent, args[0]];
-            let selected = 0;
-            changeTitle();
-            setInterval(changeTitle, titleElem.intervalSpeed);
-            function changeTitle(){
-                DOMTitle.textContent = titles[selected];
-                if(selected == 1){
-                    selected = 0;
-                }else{
-                    ++selected;
-                }
-            }
-        }else{
-            DOMTitle.textContent = args[0];
-        }
-    }
-};
-
 // Add multiple styles to a element's style tag
 Element.prototype.elemStyles = function(addStyles){
     const elem = this;
