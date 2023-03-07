@@ -30,26 +30,37 @@ var jsdev = {
         },
     
         unsavedChanges: {
+            unSavedChanges: false,
+            elemRefs: [],
+            setUnsaved: ()=>{
+                jsdev.unsavedChanges.unSavedChanges = true;
+            },
+
             listen: (container = "body", inputTypes = "input:not([type='submit']):not([type='reset']):not([disabled]), textarea:not([disabled])")=>{
-                let unSavedChanges = false;
                 window.onbeforeunload = checkSaved;
                 document.querySelectorAll(container).forEach((elem)=>{
                     elem.querySelectorAll(inputTypes).forEach((elem)=>{
-                        elem.addEventListener("input", ()=>{
-                            unSavedChanges = true;
-                        });
+                        elem.addEventListener("input", jsdev.unsavedChanges.setUnsaved);
+                        jsdev.unsavedChanges.elemRefs.push(elem);
                     });
                 })
+
+               
                 
                 
                 function checkSaved(){
-                    if(unSavedChanges){
+                    if(jsdev.unsavedChanges.unSavedChanges){
                         return "There are unsaved changes on this page, are you sure you want to exit?";
                     }
                 }
             },
             destroy: ()=>{
                 window.onbeforeunload = "";
+                jsdev.unsavedChanges.unSavedChanges = false;
+                jsdev.unsavedChanges.elemRefs.forEach((elem)=>{
+                    elem.removeEventListener("input", jsdev.unsavedChanges.setUnsaved);
+                })
+                jsdev.unsavedChanges.elemRefs.length = 0;
             }
         }
 };
