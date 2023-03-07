@@ -1,13 +1,58 @@
 // JAVASCRIPT DEVELOPER TOOLS
 
 "use strict";
+var jsdev = {
+    randInt: (min, max)=>{
+        return Math.floor(Math.random() * ((max + 1) - min) + min);
+    },
 
-function randInt(min, max){
-    return Math.floor(Math.random() * ((max + 1) - min) + min);
-}
-function randFloat(min, max){
-    return Math.random() * (max - min) + min;
-}
+    randFloat: (min, max)=>{
+        return Math.random() * (max - min) + min;
+    },
+
+    postData: (formVals, formAction, formMethod = "POST")=>{
+        // formVals = [{name: "STRING", val: any}, {name: "STRING", val: any}].
+        // formAction = url usually.
+        // (Optional) formMethod = "POST" or "GET".
+        const postForm = document.createElement("form");
+        postForm.method = formMethod;
+        const valsLength = formVals.length;
+        const mainInput = document.createElement("input");
+        for(let i = 0; i < valsLength; ++i){
+        const tempInput = mainInput.cloneNode(false);
+        tempInput.name = formVals[i].name;
+        tempInput.value = formVals[i].value
+        postForm.append(tempInput);
+        }
+        postForm.action = formAction;
+        document.getElementsByTagName("body")[0].append(postForm);
+        postForm.submit();
+        },
+    
+        unsavedChanges: {
+            listen: (container = "body", inputTypes = "input:not([type='submit']):not([type='reset']):not([disabled]), textarea:not([disabled])")=>{
+                let unSavedChanges = false;
+                window.onbeforeunload = checkSaved;
+                document.querySelectorAll(container).forEach((elem)=>{
+                    elem.querySelectorAll(inputTypes).forEach((elem)=>{
+                        elem.addEventListener("input", ()=>{
+                            unSavedChanges = true;
+                        });
+                    });
+                })
+                
+                
+                function checkSaved(){
+                    if(unSavedChanges){
+                        return "There are unsaved changes on this page, are you sure you want to exit?";
+                    }
+                }
+            },
+            destroyListener: ()=>{
+                window.onbeforeunload = "";
+            }
+        }
+};
 
 // STRING PROTOTYPES
 
@@ -73,22 +118,3 @@ Element.prototype.elemStyles = function(addStyles){
     });
     
 };
-
-function postData(formVals, formAction, formMethod = "POST"){
-// formVals = [{name: "STRING", val: any}, {name: "STRING", val: any}].
-// formAction = url usually.
-// (Optional) formMethod = "POST" or "GET".
-const postForm = document.createElement("form");
-postForm.method = formMethod;
-const valsLength = formVals.length;
-const mainInput = document.createElement("input");
-for(let i = 0; i < valsLength; ++i){
-const tempInput = mainInput.cloneNode(false);
-tempInput.name = formVals[i].name;
-tempInput.value = formVals[i].value
-postForm.append(tempInput);
-}
-postForm.action = formAction;
-document.getElementsByTagName("body")[0].append(postForm);
-postForm.submit();
-}
