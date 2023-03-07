@@ -17,7 +17,7 @@ All of the functions are indepenent so you can copy one into your script without
             
 <h2>Element Prototypes</h2>
             <br>
-            <strong>element.elemStyles("display: block;");</strong> Extends the element prototype as a shorthand version of element.style<br>
+            <strong>element.elemStyles("display: block; width: 100%;");</strong> Extends the element prototype as a shorthand version of element.style<br>
             <br>
             
 <h2>POSTing Data</h2>
