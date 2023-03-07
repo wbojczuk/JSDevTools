@@ -48,7 +48,7 @@ var jsdev = {
                     }
                 }
             },
-            destroyListener: ()=>{
+            destroy: ()=>{
                 window.onbeforeunload = "";
             }
         }
