@@ -38,7 +38,13 @@ Most of the functions are indepenent so you can copy one into your script withou
 <br>
 <strong>jsdev.getElementRefs(refs, settings)</strong><br>
 &bull; <strong>refs : </strong>Takes either valid css selectors as a string or element refs. function will determine the difference and act accordingly.<br>
-&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults {container: document, multiple = true}. container will be where the script searches for elements if a css selector is provided. multiple determines whether or not multiple element references will be returned, if multiple is set to true but a singular reference is given, it will be returned as an array. This is useful when your script is made to work with only one element, or only multiple.
+&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults {container: document, multiple = true}. container will be where the script searches for elements if a css selector is provided. multiple determines whether or not multiple element references will be returned, if multiple is set to true but a singular reference is given, it will be returned as an array. This is useful when your script is made to work with only one element, or only multiple.<br>
+
+<h2>Lazy Load Images</h2>
+<br>
+<strong>jsdev.lazyLoad(elems, settings)</strong><br>
+&bull; <strong>elems : </strong>Takes either valid css selectors as a string or element refs.<br>
+&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults {threshold: 0.1, tempSrcAttribute, targetSrcAttribute}. threshold determines the amount an element must be in the viewport before loading, with 1 being 100%, default is 10%/0.1. tempSrcAttribute is the attribute that will store the actual src value that will be used when loaded. targetSrcAttribute is the attribute that tempSrcAttribute will be applied to when loaded.
             
 <h2>Other Useful functions/prototypes</h2><br>
             <strong>value.isElement();</strong> Returns a boolean depicting whether or not target value is an element. Will detect, elements, NodeLists, and arrays of elements.<br>
