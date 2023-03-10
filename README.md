@@ -38,7 +38,7 @@ All of the functions are indepenent so you can copy one into your script without
 <br>
 <strong>jsdev.getElementRefs(refs, settings)</strong><br>
 &bull; <strong>refs : Takes either valid css selectors as a string or element refs. function will determine the difference and act accordingly.<br>
-&bull; <strong>settings (Optional): This is an object like such with the following defaults {container: document, multiple = true}. container will be where the script searches for elements if a css selector is provided. multiple determines whether or not multiple element references will be returned, this is useful when your script is made to work with only one element.
+&bull; <strong>settings (Optional): This is an object like such with the following defaults {container: document, multiple = true}. container will be where the script searches for elements if a css selector is provided. multiple determines whether or not multiple element references will be returned, if multiple is set to true but a singular reference is given, it will be returned as an array. This is useful when your script is made to work with only one element, or only multiple.
             
 <h2>Other Useful functions/prototypes</h2><br>
             <strong>value.isElement();</strong> Returns a boolean depicting whether or not target value is an element. Will detect, elements, NodeLists, and arrays of elements.<br>
