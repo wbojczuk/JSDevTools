@@ -50,8 +50,12 @@ Most of the functions are indepenent so you can copy one into your script withou
 <strong>targetSrcAttribute</strong> is the attribute that tempSrcAttribute will be applied to when loaded. <br>
 <strong>container</strong> Takes either a valid css selector as a string or an element ref. This is the element that will act as the viewport to the elements that are to be loaded <br>
 <strong>checkImages</strong> Will only set src once image has loaded, fires settings.onLoad() when loaded and setting.onError() when the image runs into an error<br>
-<strong>onError();</strong> Only fires if checkImages is set to true and an error has occurred<br>
-<strong>onLoad();</strong> Fires on each image load<br>
+<strong>onError();</strong> Only fires if checkImages is set to true and an error has occurred, this function is passed a reference to the target element<br>
+<strong>onLoad();</strong> Fires on each image load, this function is passed a reference to the target element<br>
+<br>
+            
+<h2>GETting Data from the URL</h2>
+<br><strong>jsdev.GETValues();</strong> Returns an object with the corresponding keys/values from a GET request.
             
 <h2>Other Useful functions/prototypes</h2><br>
             <strong>value.isElement();</strong> Returns a boolean depicting whether or not target value is an element. Will detect, elements, NodeLists, and arrays of elements.<br>
