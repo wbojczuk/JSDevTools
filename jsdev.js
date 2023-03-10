@@ -29,43 +29,80 @@ var jsdev = {
         postForm.submit();
         },
     
-        unsavedChanges: {
-            unSavedChanges: false,
-            elemRefs: [],
-            setUnsaved: ()=>{
-                jsdev.unsavedChanges.unSavedChanges = true;
-            },
+unsavedChanges: {
+    unSavedChanges: false,
+    elemRefs: [],
+    setUnsaved: ()=>{
+        jsdev.unsavedChanges.unSavedChanges = true;
+    },
 
-            listen: (container = "body", inputTypes = "input:not([type='submit']):not([type='reset']):not([disabled]), textarea:not([disabled])")=>{
-                window.onbeforeunload = checkSaved;
-                document.querySelectorAll(container).forEach((elem)=>{
-                    elem.querySelectorAll(inputTypes).forEach((elem)=>{
-                        elem.addEventListener("input", jsdev.unsavedChanges.setUnsaved);
-                        jsdev.unsavedChanges.elemRefs.push(elem);
-                    });
-                })
+    listen: (container = "body", inputTypes = "input:not([type='submit']):not([type='reset']):not([disabled]), textarea:not([disabled])")=>{
+            window.addEventListener("beforeunload",jsdev.unsavedChanges.checkSaved );
+        
+        
+        document.querySelectorAll(container).forEach((elem)=>{
+            elem.querySelectorAll(inputTypes).forEach((elem)=>{
+                elem.addEventListener("input", jsdev.unsavedChanges.setUnsaved);
+                jsdev.unsavedChanges.elemRefs.push(elem);
+            });
+        })
 
-               
-                
-                
-                function checkSaved(){
-                    if(jsdev.unsavedChanges.unSavedChanges){
-                        return "There are unsaved changes on this page, are you sure you want to exit?";
-                    }
-                }
-            },
-            destroy: ()=>{
-                window.onbeforeunload = "";
-                jsdev.unsavedChanges.unSavedChanges = false;
-                jsdev.unsavedChanges.elemRefs.forEach((elem)=>{
-                    elem.removeEventListener("input", jsdev.unsavedChanges.setUnsaved);
-                })
-                jsdev.unsavedChanges.elemRefs.length = 0;
-            }
+        
+        
+        
+    },
+    checkSaved: (evt)=>{
+        evt.preventDefault();
+        if(jsdev.unsavedChanges.unSavedChanges){
+            evt.returnValue = "There are unsaved changes on this page, are you sure you want to exit?";
+            return "There are unsaved changes on this page, are you sure you want to exit?";
         }
+    },
+    destroy: ()=>{
+        window.removeEventListener("beforeunload", jsdev.unsavedChanges.checkSaved);
+        jsdev.unsavedChanges.unSavedChanges = false;
+        jsdev.unsavedChanges.elemRefs.forEach((elem)=>{
+            elem.removeEventListener("input", jsdev.unsavedChanges.setUnsaved);
+        })
+        jsdev.unsavedChanges.elemRefs.length = 0;
+    }
+},
+
+getElementRefs: (refs, settings)=>{
+    const curSettings = {
+        container : document,
+        multiple : false,
+        ...settings
+    }
+    if(typeof refs == "string"){
+        return (curSettings.multiple == true) ? curSettings.container.querySelectorAll(refs) : curSettings.container.querySelector(refs);
+    }else if(refs.isElement && (refs instanceof NodeList || (Array.isArray(refs))) ){
+        console.log("multiple")
+        return (curSettings.multiple == true) ? refs : refs[0];
+    }else if(refs.isElement){
+        return refs;
+    }
+},
 };
 
-// STRING PROTOTYPES
+
+Object.prototype.isElement = function(){
+    let retval = false;
+    function isElem(elemVar){
+        if(elemVar instanceof Node || elemVar instanceof NodeList || elemVar instanceof HTMLElement || elemVar instanceof HTMLCollection){
+            return true;
+        }
+    }
+    if(isElem(this)){
+        retval = true;
+    }
+    else if(Array.isArray(this) && isElem(this[0])){
+        retval = true;
+    }
+    return retval;
+}
+
+// PROTOTYPES
 
 // Word Count
 String.prototype.wordCount = function(){
