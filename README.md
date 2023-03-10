@@ -2,7 +2,7 @@
 
 Just a few tools that makes life as a javascript developer a bit easier.<br>
 CDN <script src="https://cdn.jsdelivr.net/gh/wbojczuk/JSDevTools/jsdev.min.js"></script>
-All of the functions are indepenent so you can copy one into your script without any errors, though it is recommended to included the whole package.
+Most of the functions are indepenent so you can copy one into your script without any errors, though it is recommended to included the whole package as some functions are dependent on others in the package.
 
 <h2>String Prototypes</h2>
 <br>
