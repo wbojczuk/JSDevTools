@@ -2,6 +2,21 @@
 
 "use strict";
 var jsdev = {
+    getElementRefs: (refs, settings)=>{
+        const curSettings = {
+            container : document,
+            multiple : true,
+            ...settings
+        }
+        if(typeof refs == "string"){
+            return (curSettings.multiple == true) ? curSettings.container.querySelectorAll(refs) : curSettings.container.querySelector(refs);
+        }else if(refs.isElement && (refs instanceof NodeList || (Array.isArray(refs))) ){
+            return (curSettings.multiple == true) ? refs : refs[0];
+        }else if(refs.isElement){
+            return (curSettings.multiple == true) ? [refs] : refs;
+        }
+    },
+
     randInt: (min, max)=>{
         return Math.floor(Math.random() * ((max + 1) - min) + min);
     },
@@ -40,8 +55,8 @@ unsavedChanges: {
             window.addEventListener("beforeunload",jsdev.unsavedChanges.checkSaved );
         
         
-        document.querySelectorAll(container).forEach((elem)=>{
-            elem.querySelectorAll(inputTypes).forEach((elem)=>{
+        jsdev.getElementRefs(container).forEach((elem)=>{
+            jsdev.getElementRefs(inputTypes, {container: elem}).forEach((elem)=>{
                 elem.addEventListener("input", jsdev.unsavedChanges.setUnsaved);
                 jsdev.unsavedChanges.elemRefs.push(elem);
             });
@@ -68,21 +83,27 @@ unsavedChanges: {
     }
 },
 
-getElementRefs: (refs, settings)=>{
+lazyLoad: (elems, settings)=>{
     const curSettings = {
-        container : document,
-        multiple : false,
+        threshold: 0.1,
+        tempSrcAttribute: "data-src",
+        targetSrcAttribute: "src",
         ...settings
-    }
-    if(typeof refs == "string"){
-        return (curSettings.multiple == true) ? curSettings.container.querySelectorAll(refs) : curSettings.container.querySelector(refs);
-    }else if(refs.isElement && (refs instanceof NodeList || (Array.isArray(refs))) ){
-        console.log("multiple")
-        return (curSettings.multiple == true) ? refs : refs[0];
-    }else if(refs.isElement){
-        return refs;
-    }
-},
+    };
+    const lazyObserver = new IntersectionObserver((obsElems)=>{
+        obsElems.forEach((elem)=>{
+            if(elem.isIntersecting){
+                lazyObserver.unobserve(elem.target);
+                (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
+            }
+        })
+    },{threshold: curSettings.threshold});
+    (jsdev.getElementRefs(elems, {multiple: true})).forEach((elem)=>{
+        lazyObserver.observe(elem);
+    });
+}
+
+
 };
 
 
