@@ -88,16 +88,45 @@ lazyLoad: (elems, settings)=>{
         threshold: 0.1,
         tempSrcAttribute: "data-src",
         targetSrcAttribute: "src",
+        checkImage: false,
+        container: "body",
+        onLoad: ()=>{},
+        onError: ()=>{},
         ...settings
     };
     const lazyObserver = new IntersectionObserver((obsElems)=>{
         obsElems.forEach((elem)=>{
             if(elem.isIntersecting){
                 lazyObserver.unobserve(elem.target);
-                (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
+                if(curSettings.checkImage){
+                    // check if img exisits
+                const testImg = new Image();
+                testImg.src = (elem.target).getAttribute(curSettings.tempSrcAttribute);
+                 // If image doesn't exist, remove the image element
+                testImg.onerror = ()=>{
+                    curSettings.onError();
+                };
+                if(testImg.complete){
+                    (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
+                    curSettings.onLoad();
+                }else{
+                testImg.onload = ()=>{
+                    (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
+                    curSettings.onLoad();
+                };
+           
+        }
+                }else{
+                    (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
+                    (elem.target).onload = ()=>{
+                        curSettings.onLoad();
+                    }
+                   
+                }
+                
             }
         })
-    },{threshold: curSettings.threshold});
+    },{threshold: curSettings.threshold, root: jsdev.getElementRefs(curSettings.container, {multiple: false})});
     (jsdev.getElementRefs(elems, {multiple: true})).forEach((elem)=>{
         lazyObserver.observe(elem);
     });
