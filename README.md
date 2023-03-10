@@ -44,7 +44,8 @@ Most of the functions are indepenent so you can copy one into your script withou
 <br>
 <strong>jsdev.lazyLoad(elems, settings)</strong><br>
 &bull; <strong>elems : </strong>Takes either valid css selectors as a string or element refs.<br>
-&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults <strong>{threshold: 0.1, tempSrcAttribute: "data-src", targetSrcAttribute: "src"}</strong>. <br>
+&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults<br>
+<strong>{threshold: 0.1, tempSrcAttribute: "data-src", targetSrcAttribute: "src", container: "body", checkImages: false, onError: func(), onLoad:  func()}</strong>. <br>
 <strong>threshold</strong> determines the amount an element must be in the viewport before loading, with 1 being 100%, default is 10%/0.1.<br> <strong>tempSrcAttribute</strong> is the attribute that will store the actual src value that will be used when loaded. <br>
 <strong>targetSrcAttribute</strong> is the attribute that tempSrcAttribute will be applied to when loaded. <br>
 <strong>container</strong> Takes either a valid css selector as a string or an element ref. This is the element that will act as the viewport to the elements that are to be loaded <br>
