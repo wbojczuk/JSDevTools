@@ -44,7 +44,13 @@ Most of the functions are indepenent so you can copy one into your script withou
 <br>
 <strong>jsdev.lazyLoad(elems, settings)</strong><br>
 &bull; <strong>elems : </strong>Takes either valid css selectors as a string or element refs.<br>
-&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults <strong>{threshold: 0.1, tempSrcAttribute: "data-src", targetSrcAttribute: "src"}</strong>. <strong>threshold</strong> determines the amount an element must be in the viewport before loading, with 1 being 100%, default is 10%/0.1. <strong>tempSrcAttribute</strong> is the attribute that will store the actual src value that will be used when loaded. <strong>targetSrcAttribute</strong> is the attribute that tempSrcAttribute will be applied to when loaded.
+&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults <strong>{threshold: 0.1, tempSrcAttribute: "data-src", targetSrcAttribute: "src"}</strong>. <br>
+<strong>threshold</strong> determines the amount an element must be in the viewport before loading, with 1 being 100%, default is 10%/0.1.<br> <strong>tempSrcAttribute</strong> is the attribute that will store the actual src value that will be used when loaded. <br>
+<strong>targetSrcAttribute</strong> is the attribute that tempSrcAttribute will be applied to when loaded. <br>
+<strong>container</strong> Takes either a valid css selector as a string or an element ref. This is the element that will act as the viewport to the elements that are to be loaded <br>
+<strong>checkImages</strong> Will only set src once image has loaded, fires settings.onLoad() when loaded and setting.onError() when the image runs into an error<br>
+<strong>onError();</strong> Only fires if checkImages is set to true and an error has occurred<br>
+<strong>onLoad();</strong> Fires on each image load<br>
             
 <h2>Other Useful functions/prototypes</h2><br>
             <strong>value.isElement();</strong> Returns a boolean depicting whether or not target value is an element. Will detect, elements, NodeLists, and arrays of elements.<br>
