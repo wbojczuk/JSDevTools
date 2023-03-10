@@ -62,9 +62,6 @@ unsavedChanges: {
             });
         })
 
-        
-        
-        
     },
     checkSaved: (evt)=>{
         evt.preventDefault();
@@ -104,22 +101,23 @@ lazyLoad: (elems, settings)=>{
                 testImg.src = (elem.target).getAttribute(curSettings.tempSrcAttribute);
                  // If image doesn't exist, remove the image element
                 testImg.onerror = ()=>{
-                    curSettings.onError();
+                    curSettings.onError(elem.target);
                 };
                 if(testImg.complete){
                     (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
-                    curSettings.onLoad();
+                    curSettings.onLoad(elem.target);
                 }else{
                 testImg.onload = ()=>{
                     (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
-                    curSettings.onLoad();
+
+                    curSettings.onLoad(elem.target);
                 };
            
         }
                 }else{
                     (elem.target).setAttribute(curSettings.targetSrcAttribute, (elem.target).getAttribute(curSettings.tempSrcAttribute));
                     (elem.target).onload = ()=>{
-                        curSettings.onLoad();
+                            curSettings.onLoad(elem.target);
                     }
                    
                 }
