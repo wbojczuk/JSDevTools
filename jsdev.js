@@ -89,7 +89,7 @@ lazyLoad: (elems, settings)=>{
         tempSrcAttribute: "data-src",
         targetSrcAttribute: "src",
         checkImage: false,
-        container: "body",
+        container: null,
         onLoad: ()=>{},
         onError: ()=>{},
         ...settings
@@ -126,7 +126,7 @@ lazyLoad: (elems, settings)=>{
                 
             }
         })
-    },{threshold: curSettings.threshold, root: jsdev.getElementRefs(curSettings.container, {multiple: false})});
+    },{threshold: curSettings.threshold, root: (curSettings.container == null) ? null : jsdev.getElementRefs(curSettings.container, {multiple: false})});
     (jsdev.getElementRefs(elems, {multiple: true})).forEach((elem)=>{
         lazyObserver.observe(elem);
     });
