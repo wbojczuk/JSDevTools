@@ -25,21 +25,30 @@ var jsdev = {
         return Math.random() * (max - min) + min;
     },
 
-    postData: (formVals, formAction, formMethod = "POST")=>{
-        // formVals = [{name: "STRING", val: any}, {name: "STRING", val: any}].
-        // formAction = url usually.
-        // (Optional) formMethod = "POST" or "GET".
+    postData: (settings)=>{
+        const curSettings = {
+            POST: [],
+            GET: [],
+            action: "",
+            ...settings
+        }
         const postForm = document.createElement("form");
-        postForm.method = formMethod;
-        const valsLength = formVals.length;
+        postForm.method = "POST";
+        const postLength = curSettings.POST.length;
         const mainInput = document.createElement("input");
-        for(let i = 0; i < valsLength; ++i){
+        for(let i = 0; i < postLength; ++i){
         const tempInput = mainInput.cloneNode(false);
-        tempInput.name = formVals[i].name;
-        tempInput.value = formVals[i].value
+        tempInput.name = curSettings.POST[i].name;
+        tempInput.value = curSettings.POST[i].value
         postForm.append(tempInput);
         }
-        postForm.action = formAction;
+        let getStr = "";
+        let getLength = curSettings.GET.length;
+        for (let i = 0; i < getLength; i++) {
+            if(i == 0){getStr += "?"}
+            getStr += (i > 0) ? `&${curSettings.GET[i].name}=${curSettings.GET[i].value}` : `${curSettings.GET[i].name}=${curSettings.GET[i].value}`;
+        }
+        postForm.action = `${curSettings.action}${getStr}`;
         document.getElementsByTagName("body")[0].append(postForm);
         postForm.submit();
         },
@@ -51,12 +60,17 @@ unsavedChanges: {
         jsdev.unsavedChanges.unSavedChanges = true;
     },
 
-    listen: (container = "body", inputTypes = "input:not([type='submit']):not([type='reset']):not([disabled]), textarea:not([disabled])")=>{
+    listen: (settings)=>{
+        const curSettings = {
+            containers : "body",
+            inputTypes: "input:not([type='submit']):not([type='reset']):not([disabled]), textarea:not([disabled])",
+            ...settings
+        }
             window.addEventListener("beforeunload",jsdev.unsavedChanges.checkSaved );
         
         
-        jsdev.getElementRefs(container).forEach((elem)=>{
-            jsdev.getElementRefs(inputTypes, {container: elem}).forEach((elem)=>{
+        jsdev.getElementRefs(curSettings.containers, {multiple: true}).forEach((elem)=>{
+            jsdev.getElementRefs(curSettings.inputTypes, {container: elem, multiple: true}).forEach((elem)=>{
                 elem.addEventListener("input", jsdev.unsavedChanges.setUnsaved);
                 jsdev.unsavedChanges.elemRefs.push(elem);
             });
@@ -65,10 +79,8 @@ unsavedChanges: {
     },
     checkSaved: (evt)=>{
         evt.preventDefault();
-        if(jsdev.unsavedChanges.unSavedChanges){
             evt.returnValue = "There are unsaved changes on this page, are you sure you want to exit?";
             return "There are unsaved changes on this page, are you sure you want to exit?";
-        }
     },
     destroy: ()=>{
         window.removeEventListener("beforeunload", jsdev.unsavedChanges.checkSaved);
