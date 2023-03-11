@@ -33,7 +33,6 @@ Most of the functions are indepenent so you can copy one into your script withou
             &bull; <strong>settings (Optional): </strong> settings is an object that can take three properties as listed below<br>
             &bull; <strong>containers: </strong> This argument takes any valid css selectors or element references. These/This element(s) will be the container(s) whoes input elements will be listened. The default value is the body element<br>
             &bull; <strong>inputTypes: </strong> This argument also takes any valid css selectors or element references and determines the inputs that will be listened to. Default is any input other than disabled, type of submit, type of reset, and it includes textarea elements.<br>
-            &bull; <strong>onUnsaved: </strong>An optional function to run which replaces the default message.<br><br>
             <strong>jsdev.unsavedChanges.destroy(); : </strong> Stops listening for changes and removes any event listeners.<br><br>
             
 <h2>Get Element Refs</h2>
