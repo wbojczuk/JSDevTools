@@ -22,10 +22,12 @@ Most of the functions are indepenent so you can copy one into your script withou
             
 <h2>POSTing Data</h2>
             <br>
-            <strong>jsdev.postData(formVals, formAction, formMethod);</strong><br>
-            &bull; <strong>formVals: </strong> This argument takes an array of objects like so [{name: "YourName", value: YourValue}, {name: "YourName", value: YourValue}]. The name field in the object will be used as the value's name once the data is submitted, and the value field is the value tied to that name.<br>
-            &bull; <strong>formAction: </strong> This argument takes a string, usually a url. This is what is executed upon data submittal.<br>
-            &bull; <strong>formMethod (Optional): </strong> This argument takes a string and sets the method of submitting data, (GET, POST). The default value is POST.<br>
+            <strong>jsdev.postData(settings);</strong><br>
+             &bull; <strong>settings: </strong>settings is an object that takes the properties mentioned below<br>
+            &bull; <strong>settings.POST: </strong> This argument takes an array of objects like so [{name: "YourName", value: YourValue}, {name: "YourName", value: YourValue}]. The name field in the object will be used as the value's name once the data is submitted, and the value field is the value tied to that name. This data will be sent with the POST method<br>
+            &bull; <strong>settings.GET (Optional): </strong> Same as settings.POST but the data is sent via the GET method<br>
+            &bull; <strong>settings.action: </strong> This argument takes a string, usually a url. This is what is executed upon data submittal.<br>
+            
             
 <h2>Listening for unsaved changes</h2>
 <br>
