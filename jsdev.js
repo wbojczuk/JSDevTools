@@ -78,9 +78,11 @@ unsavedChanges: {
 
     },
     checkSaved: (evt)=>{
-        evt.preventDefault();
+        if(jsdev.unsavedChanges.unSavedChanges){
+            evt.preventDefault();
             evt.returnValue = "There are unsaved changes on this page, are you sure you want to exit?";
             return "There are unsaved changes on this page, are you sure you want to exit?";
+        }
     },
     destroy: ()=>{
         window.removeEventListener("beforeunload", jsdev.unsavedChanges.checkSaved);
