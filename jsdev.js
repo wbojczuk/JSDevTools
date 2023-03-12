@@ -1,6 +1,6 @@
 /*
  Program: jsdev.js
- Version: 1.0
+ Version: 1.1
  Creator: William Bojczuk (wiliambojczuk@gmail.com)
  License: BSD
  Github: https://github.com/wbojczuk
@@ -100,6 +100,39 @@ unsavedChanges: {
         })
         jsdev.unsavedChanges.elemRefs.length = 0;
     }
+},
+
+intersectionTrigger: (elems, settings)=>{
+    const curSettings = {
+        thresholdIn: 0.5,
+        thresholdOut: 0.1,
+        container: null,
+        onTrigger: ()=>{},
+        onExit: ()=>{},
+        ...settings
+    }
+    const triggerObserver = new IntersectionObserver((entries)=>{
+        entries.forEach((entry)=>{
+            if(entry.isIntersecting){
+                if(entry.target.dataset.is_triggered == "false"){
+                    entry.target.setAttribute("data-is_triggered", "true");
+                    curSettings.onTrigger(entry.target);
+                }
+            }
+        })
+    }, {threshold: curSettings.thresholdIn});
+    const exitObserver = new IntersectionObserver((entries)=>{
+        entries.forEach((entry)=>{
+            if(!entry.isIntersecting){
+                if(entry.target.dataset.is_triggered == "true"){
+                    entry.target.setAttribute("data-is_triggered", "false");
+                    curSettings.onExit(entry.target);
+                }
+            }
+        })
+    }, {threshold: curSettings.thresholdOut});
+
+    (jsdev.getElementRefs(elems, {multiple: true})).forEach((elem)=>{elem.setAttribute("data-is_triggered", "false");triggerObserver.observe(elem);exitObserver.observe(elem)})
 },
 
 lazyLoad: (elems, settings)=>{
