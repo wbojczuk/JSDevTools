@@ -48,7 +48,7 @@ Most of the functions are indepenent so you can copy one into your script withou
 <strong>jsdev.lazyLoad(elems, settings)</strong><br>
 &bull; <strong>elems : </strong>Takes either valid css selectors as a string or element refs.<br>
 &bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults<br>
-<strong>{threshold: 0.1, tempSrcAttribute: "data-src", targetSrcAttribute: "src", container: "body", checkImages: false, onError: func(), onLoad:  func()}</strong>. <br>
+<strong>{threshold: 0.1, tempSrcAttribute: "data-src", targetSrcAttribute: "src", container: null, checkImages: false, onError: func(), onLoad:  func()}</strong>. <br>
 <strong>threshold</strong> determines the amount an element must be in the viewport before loading, with 1 being 100%, default is 10%/0.1.<br> <strong>tempSrcAttribute</strong> is the attribute that will store the actual src value that will be used when loaded. <br>
 <strong>targetSrcAttribute</strong> is the attribute that tempSrcAttribute will be applied to when loaded. <br>
 <strong>container</strong> Takes either a valid css selector as a string or an element ref. This is the element that will act as the viewport to the elements that are to be loaded <br>
@@ -56,6 +56,18 @@ Most of the functions are indepenent so you can copy one into your script withou
 <strong>onError();</strong> Only fires if checkImages is set to true and an error has occurred, this function is passed a reference to the target element<br>
 <strong>onLoad();</strong> Fires on each image load, this function is passed a reference to the target element<br>
 <br>
+
+<h2>Setting An Intersection Trigger</h2>
+<br>
+<strong>jsdev.intersectionTrigger(elems, settings)</strong><br>
+&bull; <strong>elems : </strong>Takes either valid css selectors as a string or element refs.<br>
+&bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults<br>
+<strong>{thresholdIn: 0.5, thresholdOut: 0.1, onTrigger: function(), onExit: function(), container: null}</strong>. <br>
+<strong>thresholdIn</strong> determines the amount an element must be in the viewport before triggering onTrigger(), with 1 being 100%, default is 10%/0.1.<br> 
+<strong>thresholdOut</strong> determines the amount an element must be in the viewport before triggering onExit(), with 1 being 100%, default is 10%/0.1.<br> 
+<strong>onTrigger();</strong> For you to use lol, this function is passed a reference to the target element<br>
+<strong>onExit();</strong> For you to use , this function is passed a reference to the target element<br>
+<strong>container</strong> Takes either a valid css selector as a string or an element ref. This is the element that will act as the viewport to the elements that are to be loaded. Default is the browser window. <br>
             
 <h2>GETting Data from the URL</h2>
 <br><strong>jsdev.GETValues();</strong> Returns an object with the corresponding keys/values from a GET request.
