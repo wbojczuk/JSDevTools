@@ -52,8 +52,34 @@
      randFloat: (min, max)=>{
          return Math.random() * (max - min) + min;
      },
+
+    //  STILL IN TESTING
+
+     postData: async (url, data, settings)=>{
+        const curSettings = {
+            contentType: "application/json",
+            redirect: null,
+            ...settings
+        }
+        fetch(url,{
+            method: "POST",
+            headers:{"Content-Type": curSettings.contentType,"Accept": curSettings.contentType},
+            body: data
+        }).then(()=>{
+            if((curSettings.redirect) !== null){
+                console.log("HEY")
+                if((curSettings.redirect).toLowerCase() === "reload"){
+                    window.location.reload();
+                }else{
+                    window.location.href = curSettings.redirect;
+                } 
+            }
+            
+        }).catch((err)=>{console.log(err)});
+        
+     },
  
-     postData: (settings)=>{
+     postFormData: (settings)=>{
          const curSettings = {
              POST: [],
              GET: [],
