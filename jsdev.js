@@ -139,9 +139,6 @@
                      entry.target.setAttribute("data-is_triggered", "true");
                      curSettings.onTrigger(entry.target);
                  }
-                 if(!curSettings.repeat){
-                    triggerObserver.unobserve(entry.target)
-                 }
              }
          })
      }, {threshold: curSettings.thresholdIn});
@@ -154,6 +151,7 @@
                  }
                  if(!curSettings.repeat){
                     exitObserver.unobserve(entry.target)
+                    triggerObserver.unobserve(entry.target)
                  }
              }
          })
