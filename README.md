@@ -73,9 +73,9 @@ Most of the functions are indepenent so you can copy one into your script withou
 <br><strong>jsdev.GETValues();</strong> Returns an object with the corresponding keys/values from a GET request.
             
 <h2>Other Useful functions/prototypes</h2><br>
-            <strong>value.isElement();</strong> Returns a boolean depicting whether or not target value is an element. Will detect, elements, NodeLists, and arrays of elements.<br>
+            <strong>jsdev.isElement(value);</strong> Returns a boolean depicting whether or not target value is an element. Will detect, elements, NodeLists, and arrays of elements.<br>
             <br>
-            <strong>value.isObject();</strong> Returns a boolean depicting whether or not target value is an object.<br>
+            <strong>jsdev.isObject(value);</strong> Returns a boolean depicting whether or not target value is an object.<br>
             <br>
             <strong>jsdev.randInt(min, max);</strong> returns a random integer in the min/max range<br>
             <br>

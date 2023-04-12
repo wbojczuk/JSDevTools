@@ -52,6 +52,7 @@
      randFloat: (min, max)=>{
          return Math.random() * (max - min) + min;
      },
+
      postFormData: (settings)=>{
          const curSettings = {
              POST: [],
