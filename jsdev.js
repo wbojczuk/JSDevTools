@@ -52,8 +52,7 @@
      randFloat: (min, max)=>{
          return Math.random() * (max - min) + min;
      },
- 
-     postData: (settings)=>{
+     postFormData: (settings)=>{
          const curSettings = {
              POST: [],
              GET: [],
@@ -125,7 +124,8 @@
  intersectionTrigger: (elems, settings)=>{
      const curSettings = {
          thresholdIn: 0.5,
-         thresholdOut: 0.1,
+         thresholdOut: 0.1, 
+         repeat: true, //Set to FALSE to only trigger once
          container: null,
          onTrigger: ()=>{},
          onExit: ()=>{},
@@ -138,21 +138,30 @@
                      entry.target.setAttribute("data-is_triggered", "true");
                      curSettings.onTrigger(entry.target);
                  }
+                 if(!curSettings.repeat){
+                    triggerObserver.unobserve(entry.target)
+                 }
              }
          })
      }, {threshold: curSettings.thresholdIn});
-     const exitObserver = new IntersectionObserver((entries)=>{
+     if(curSettings.thresholdOut != null){const exitObserver = new IntersectionObserver((entries)=>{
          entries.forEach((entry)=>{
              if(!entry.isIntersecting){
                  if(entry.target.dataset.is_triggered == "true"){
                      entry.target.setAttribute("data-is_triggered", "false");
                      curSettings.onExit(entry.target);
                  }
+                 if(!curSettings.repeat){
+                    exitObserver.unobserve(entry.target)
+                 }
              }
          })
      }, {threshold: curSettings.thresholdOut});
+     (jsdev.getElementRefs(elems, {multiple: true})).forEach((elem)=>{exitObserver.observe(elem) })
+    }
+     
  
-     (jsdev.getElementRefs(elems, {multiple: true})).forEach((elem)=>{elem.setAttribute("data-is_triggered", "false");triggerObserver.observe(elem);exitObserver.observe(elem)})
+     (jsdev.getElementRefs(elems, {multiple: true})).forEach((elem)=>{elem.setAttribute("data-is_triggered", "false");triggerObserver.observe(elem);})
  },
  
  lazyLoad: (elems, settings)=>{
@@ -220,72 +229,62 @@
        return retval;
    },
    
-   
+   // Add multiple styles to a element's style tag
+ elemStyles : function(elem, addStyles){
+    const tempStyles = addStyles.split(";");
+    tempStyles.pop();
+    const allStyles = [];
+    tempStyles.forEach((style)=>{
+        const tempStyles = style.split(":");
+        if(/-/gi.test(tempStyles[0])){
+            const tempStyle = tempStyles[0].split("-");
+            let tempStr = tempStyle[1].slice(1);
+            tempStyles[0] = tempStyle[0] + tempStyle[1].charAt(0).toUpperCase() + tempStr;
+        }
+        allStyles[allStyles.length] = [tempStyles[0].trim(), tempStyles[1].trim()];
+    });
+    allStyles.forEach((style)=>{
+        elem.style[style[0]] = style[1];
+    });
+    
+},
+wordCount: function(str){
+    if(/[0-9a-z]{1,}/gi.test(str)){
+        return str.match(/[0-9a-z]{1,}/gi).length;
+    }else{
+        return 0;
+    }
+    
+},
+wordsToUpperCase : function(str){
+    return(str.replace(/[a-z]{1,}(?!\w)/gi, (match)=>{
+        let tempStr = match.slice(1);
+        let tempUp = match.charAt(0).toUpperCase();
+        return tempUp + tempStr;
+    }));
+    
+},
+sortRandom : function(arr){
+    const arrayLength = arr.length;
+    const arrayRefs = [];
+    const outputArray = [];
+    for(let i = 0; i < arrayLength; i++){
+        arrayRefs.push(i);
+    }
+    for(let i = 0; i < arrayLength; i++){
+        const currentNum = Math.floor(Math.random() * (arrayRefs.length - 0) + 0);
+        outputArray.push(arr[arrayRefs[currentNum]]);
+        arrayRefs.splice(currentNum, 1);
+    }
+    return outputArray;
+}
  
- 
- };
- 
- 
- 
- // PROTOTYPES
- 
- // Word Count
- String.prototype.wordCount = function(){
-     if(/[0-9a-z]{1,}/gi.test(this)){
-         return this.match(/[0-9a-z]{1,}/gi).length;
-     }else{
-         return 0;
-     }
-     
- };
- 
- String.prototype.wordsToUpperCase = function(){
-     return(this.replace(/[a-z]{1,}(?!\w)/gi, (match)=>{
-         let tempStr = match.slice(1);
-         let tempUp = match.charAt(0).toUpperCase();
-         return tempUp + tempStr;
-     }));
-     
  };
  
  // ARRAY PROTOTYPES
  
  // SORT TARGET ARRAY IN A RANDOM ORDER
- Array.prototype.sortRandom = function(){
-     const arrayLength = this.length;
-     const arrayRefs = [];
-     const outputArray = [];
-     for(let i = 0; i < arrayLength; i++){
-         arrayRefs.push(i);
-     }
-     for(let i = 0; i < arrayLength; i++){
-         const currentNum = Math.floor(Math.random() * (arrayRefs.length - 0) + 0);
-         outputArray.push(this[arrayRefs[currentNum]]);
-         arrayRefs.splice(currentNum, 1);
-     }
-     return outputArray;
- };
  
  
  
- // Add multiple styles to a element's style tag
- Element.prototype.elemStyles = function(addStyles){
-     const elem = this;
-     const tempStyles = addStyles.split(";");
-     tempStyles.pop();
-     const allStyles = [];
-     tempStyles.forEach((style)=>{
-         const tempStyles = style.split(":");
-         if(/-/gi.test(tempStyles[0])){
-             const tempStyle = tempStyles[0].split("-");
-             let tempStr = tempStyle[1].slice(1);
-             tempStyles[0] = tempStyle[0] + tempStyle[1].charAt(0).toUpperCase() + tempStr;
-         }
-         allStyles[allStyles.length] = [tempStyles[0].trim(), tempStyles[1].trim()];
-     });
-     allStyles.forEach((style)=>{
-         elem.style[style[0]] = style[1];
-     });
-     
- };
  
