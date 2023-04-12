@@ -148,10 +148,10 @@
                  if(entry.target.dataset.is_triggered == "true"){
                      entry.target.setAttribute("data-is_triggered", "false");
                      curSettings.onExit(entry.target);
-                 }
-                 if(!curSettings.repeat){
-                    exitObserver.unobserve(entry.target)
-                    triggerObserver.unobserve(entry.target)
+                     if(!curSettings.repeat){
+                        exitObserver.unobserve(entry.target)
+                        triggerObserver.unobserve(entry.target)
+                     }
                  }
              }
          })
