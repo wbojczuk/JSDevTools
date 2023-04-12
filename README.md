@@ -64,6 +64,7 @@ Most of the functions are indepenent so you can copy one into your script withou
 &bull; <strong>settings (Optional): </strong>This is an object like such with the following defaults<br>
 <strong>{thresholdIn: 0.5, thresholdOut: 0.1, onTrigger: function(), onExit: function(), container: null}</strong>. <br>
 <strong>thresholdIn</strong> determines the amount an element must be in the viewport before triggering onTrigger(), with 1 being 100%, default is 10%/0.1.<br> 
+<strong>repeat</strong> if true, intersection will repeat everytime the viewport intersects. set to false to only have it trigger once<br> 
 <strong>thresholdOut</strong> determines the amount an element must be in the viewport before triggering onExit(), with 1 being 100%, default is 10%/0.1.<br> 
 <strong>onTrigger();</strong> For you to use lol, this function is passed a reference to the target element<br>
 <strong>onExit();</strong> For you to use , this function is passed a reference to the target element<br>
